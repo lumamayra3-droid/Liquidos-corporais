@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Caça ao Tesouro · Análises Clínicas</title>
+<style>
+:root{--bg:#faf7fb;--card:#fff;--tx:#241a2b;--mut:#6b5e75;--pri:#7a1f6d;--ok:#1b7f4c;--okbg:#e4f5ec;--no:#b3261e;--nobg:#fdeceb;--bd:#e5dbe9;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17111b;--card:#221a28;--tx:#f1e9f4;--mut:#b5a6bf;--pri:#d98bd0;--ok:#6fd6a0;--okbg:#14301f;--no:#ff8f86;--nobg:#3a1a18;--bd:#3a2e43}}
+:root[data-theme="dark"]{--bg:#17111b;--card:#221a28;--tx:#f1e9f4;--mut:#b5a6bf;--pri:#d98bd0;--ok:#6fd6a0;--okbg:#14301f;--no:#ff8f86;--nobg:#3a1a18;--bd:#3a2e43}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:620px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.5rem;margin:.2em 0}h2{font-size:1.15rem;margin:.2em 0 .6em}
+.mut{color:var(--mut);font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin:12px 0}
+.st{display:block;text-decoration:none;color:inherit}
+.st b{color:var(--pri)}
+.opt{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:var(--card);border:1.5px solid var(--bd);border-radius:12px;padding:12px 14px;margin:8px 0;cursor:pointer}
+.opt:hover{border-color:var(--pri)}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.no{background:var(--nobg);border-color:var(--no)}
+.fb{border-radius:12px;padding:12px 14px;margin:12px 0}
+.fb.ok{background:var(--okbg);border:1px solid var(--ok)}
+.fb.no{background:var(--nobg);border:1px solid var(--no)}
+.btn{font:inherit;background:var(--pri);color:#fff;border:0;border-radius:12px;padding:12px 18px;cursor:pointer;margin-top:8px}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#17111b}}
+.bar{height:8px;background:var(--bd);border-radius:8px;overflow:hidden;margin:10px 0}
+.bar i{display:block;height:100%;background:var(--pri);transition:width .3s}
+.clue{font-size:1.05rem}
+.code{font-size:1.8rem;font-weight:800;letter-spacing:.08em;color:var(--pri);text-align:center;padding:10px}
+a.back{color:var(--pri);text-decoration:none;font-size:.92rem}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+// ===== EDITE AQUI: dicas de local e palavra-código =====
+var CODIGO = "NEUBAUER";
+var ESTACOES = [
+
+ {id:"urina-eas", nome:"Urina e EAS", dica:"Dica do próximo local: (escreva aqui onde está o QR da estação 2)", perguntas:[
+  {q:"CASO CLÍNICO: mulher, 28 anos, com ardência ao urinar e aumento da frequência das micções. Urina recente (jato médio): pH alcalino, nitrito e leucócito esterase positivos; no sedimento, bacteriúria e leucocitúria. Qual a interpretação?",
+   o:["Infecção urinária: os achados químicos e microscópicos apontam para o mesmo processo","Amostra mal conservada: o pH alcalino mostra que bactérias cresceram no frasco","Proteinúria ortostática, sem relevância clínica"],c:0,
+   e:"A amostra é recente, então o pH alcalino não vem de má conservação. O nitrito indica bactérias (em geral Gram-negativas, como a E. coli, causa de cerca de 80% das infecções urinárias), a leucócito esterase indica leucócitos e o sedimento confirma os dois. Quando vários exames contam a mesma história, a chance de ser contaminação cai muito."},
+  {q:"CASO CLÍNICO: mulher, 35 anos, colheu a urina do EAS sem fazer higiene e aproveitando o primeiro jato. O sedimento mostra muitas células epiteliais e muco, sem leucocitúria. Qual a explicação mais provável?",
+   o:["Contaminação da coleta, com células da uretra e da vagina","Infecção renal em atividade","Cristalúria patológica"],c:0,
+   e:"Células epiteliais escamosas vêm da uretra e da vagina, e o muco aumenta com contaminação vaginal e não tem significado clínico. Sem leucócitos, não há sinal de infecção. Para evitar isso: boa higiene e coleta do jato médio, o melhor para o EAS."},
+  {q:"CASO CLÍNICO: uma urina colhida às 7h só chegou ao laboratório às 14h, sem refrigeração. Está turva, com cheiro de amônia e pH 8,5. Qual a conduta?",
+   o:["Liberar o resultado, pois o pH da urina normal é alcalino","Solicitar nova amostra: bactérias transformaram ureia em amônia e o pH subiu","Atribuir o resultado à hemólise e liberar"],c:1,
+   e:"Bactérias com urease quebram a ureia em amônia, que é alcalina e tem cheiro forte, e a urina fica turva. O pH normal da primeira urina é ácido (5,0 a 6,0). Como a alteração veio da conservação, a amostra não deve ser testada e uma nova é solicitada."},
+  {q:"CASO CLÍNICO: paciente com anemia hemolítica e pele amarelada. Sangue: bilirrubina indireta aumentada. Urina: bilirrubina negativa e urobilinogênio aumentado. Por que a bilirrubina não aparece na urina?",
+   o:["A bilirrubina indireta está ligada à albumina e é insolúvel em água, então o rim não a excreta","A bilirrubina foi destruída pela luz dentro do rim","A tira reativa só detecta bilirrubina no sangue"],c:0,
+   e:"A bilirrubina indireta (não conjugada) viaja ligada à albumina e é insolúvel em água, por isso não passa para a urina. Com mais hemólise, mais bilirrubina chega ao intestino e mais urobilinogênio é formado e reabsorvido, e ele sobe na urina."}
+ ]},
+ {id:"sedimentoscopia", nome:"Sedimentoscopia", dica:"Dica do próximo local: (escreva aqui onde está o QR da estação 3)", perguntas:[
+  {q:"CASO CLÍNICO: homem, 25 anos, com urina avermelhada. No sedimento há hematúria com hemácias dismórficas (acantócitos) e cilindros hemáticos, sem bacteriúria nem leucocitúria. Qual a origem mais provável do sangue?",
+   o:["Pós-renal, por cálculo ou cistite","Renal glomerular, como em uma glomerulonefrite","Contaminação por secreção genital"],c:1,
+   e:"Hemácias dismórficas mostram que passaram pela membrana glomerular. Cilindro hemático mostra que o sangue estava dentro do túbulo renal quando o cilindro se formou. Juntos, apontam para os rins. Sem bactérias nem leucócitos, infecção e contaminação ficam menos prováveis."},
+  {q:"CASO CLÍNICO: amostra com pH 8,0 e densidade baixa. O sedimento mostra hemácias só como membranas vazias (“fantasmas”). Qual a interpretação?",
+   o:["Efeito da urina alcalina e diluída sobre as hemácias, sem indicar lesão glomerular","Hemácias dismórficas, que indicam glomerulonefrite","Hemácias crenadas, por urina concentrada"],c:0,
+   e:"Em urina alcalina as hemácias se rompem e ficam só com a membrana (“fantasmas”). Em urina diluída ficam maiores e arredondadas, e em urina concentrada ficam crenadas. São alterações da amostra. Já as dismórficas, com bulbos e fragmentos, indicam passagem pelo glomérulo."},
+  {q:"CASO CLÍNICO: paciente desidratado, com pouco volume urinário e urina ácida e concentrada. O sedimento mostra alguns cilindros hialinos e nada mais. Qual a interpretação?",
+   o:["Achado de pouca importância clínica, favorecido por urina ácida, concentrada e de fluxo lento","Prova de doença renal grave","Contaminação vaginal"],c:0,
+   e:"Os cilindros se formam nos túbulos distal e coletor com a proteína de Tamm-Horsfall, e acidez, urina concentrada, volume reduzido e fluxo lento favorecem essa formação. Pessoas normais eliminam até 1.000 cilindros hialinos por dia. Só a eliminação contínua pode indicar disfunção renal inicial."},
+  {q:"CASO CLÍNICO: urina de pH 8,0, com cristais em formato de “tampa de caixão”. Qual o cristal e o que o pH explica?",
+   o:["Fosfato triplo magnesiano, típico de urina alcalina","Ácido úrico, típico de urina com pH acima de 7,0","Oxalato de cálcio, típico de urina alcalina"],c:0,
+   e:"Urina alcalina forma fosfato triplo magnesiano (tampa de caixão), biurato de amônio e fosfato amorfo. Urina ácida forma ácido úrico (pH abaixo de 5,5), oxalato de cálcio e urato amorfo. Por isso o pH ajuda a identificar o cristal."}
+ ]},
+ {id:"lcr", nome:"LCR (líquor)", dica:"Dica do próximo local: (escreva aqui onde está o QR da estação 4)", perguntas:[
+  {q:"CASO CLÍNICO: paciente com febre e suspeita de meningite. Punção lombar: LCR turvo e esbranquiçado, glicose de 15 mg/dL (glicemia de 100 mg/dL), leucócitos muito aumentados com predomínio de neutrófilos, lactato de 40 mg/dL. Qual a hipótese mais provável?",
+   o:["Meningite viral","Meningite bacteriana","Meningite tuberculosa"],c:1,
+   e:"A glicose normal do LCR é cerca de 60 a 70% da glicemia, então 15 mg/dL é muito baixa: bactérias e neutrófilos a consomem. Lactato acima de 25 mg/dL e aspecto esbranquiçado (muitos leucócitos) reforçam. Na viral a glicose é normal com linfócitos aumentados. Na tuberculosa predominam linfócitos."},
+  {q:"CASO CLÍNICO: recém-nascido com aumento da cabeça. Suspeita-se de hidrocefalia por falha na reabsorção do líquor. Qual estrutura normalmente reabsorve o LCR?",
+   o:["As vilosidades aracnóideas, que levam o líquor ao sangue venoso","O plexo coróide, que o reabsorve nos ventrículos","A dura-máter, por filtração"],c:0,
+   e:"O plexo coróide produz o líquor. As vilosidades aracnóideas, que se projetam nos seios venosos, o reabsorvem. Se a absorção diminui ou há bloqueio nos ventrículos, o líquor se acumula e causa hidrocefalia, com aumento da cabeça no feto e no recém-nascido."},
+  {q:"CASO CLÍNICO: após uma punção lombar difícil, o LCR veio sanguinolento e formou coágulo no tubo. Qual a explicação mais provável?",
+   o:["Punção traumática, pois entrou fibrinogênio do plasma na amostra","Hemorragia intracraniana","Meningite tuberculosa"],c:0,
+   e:"Coágulo precisa de fibrinogênio. Na punção traumática o sangue do paciente entra na amostra e coagula. O líquor de hemorragia intracraniana não tem fibrinogênio suficiente para coagular. Na tuberculosa aparece uma película em forma de teia após refrigerar."},
+  {q:"CASO CLÍNICO: o LCR de um paciente, após uma noite refrigerado, formou uma película em forma de teia. Há aumento de linfócitos e ADA elevada. Qual a hipótese e qual coloração pesquisa o agente?",
+   o:["Meningite tuberculosa; Ziehl-Neelsen","Meningite por Cryptococcus; Ziehl-Neelsen","Meningite tuberculosa; tinta da China"],c:0,
+   e:"A película em teia, os linfócitos e a ADA (marcador de ativação linfocitária) apontam para meningite tuberculosa. O Mycobacterium tuberculosis é pesquisado pelo Ziehl-Neelsen. A tinta da China (nanquim) pesquisa Cryptococcus neoformans."}
+ ]},
+ {id:"espermograma", nome:"Espermograma", final:true, dica:"", perguntas:[
+  {q:"CASO CLÍNICO: homem, 32 anos, casal tenta engravidar há 1 ano. Espermograma: volume 2,5 mL, liquefação em 40 min, pH 7,6, concentração 40.000.000/mL, motilidade A+B de 20%, vitalidade de 70% e 30% de formas normais. Qual a interpretação?",
+   o:["Espermograma normal","Astenozoospermia e teratozoospermia, com concentração normal","Oligozoospermia e necrospermia"],c:1,
+   e:"Confira parâmetro por parâmetro. Volume (≥ 1,5 mL), liquefação (até 60 min), pH (7,2 a 8,0), concentração (> 15 milhões/mL) e vitalidade (> 58% de vivos) estão normais. A motilidade A+B de 20% está abaixo de 30%: astenozoospermia. Apenas 30% de formas normais, quando o esperado é acima de 50%: teratozoospermia."},
+  {q:"CASO CLÍNICO: a amostra de um paciente não liquefez em 60 minutos e o pH está em 8,4. Qual a causa mais provável?",
+   o:["Coleta em frasco de plástico","Deficiência das vesículas seminais","Deficiência prostática (falta de fibrinolisina)"],c:2,
+   e:"Logo após a ejaculação o sêmen forma um gel. A próstata libera a enzima (fibrinolisina) que desmancha esse coágulo. Sem ela, o gel persiste e o pH fica acima de 8,0. Já o pH ácido aponta para as vesículas seminais."},
+  {q:"CASO CLÍNICO: um paciente tem amostra com 240 espermatozoides contados nos 4 quadrantes laterais da câmara de Neubauer, na diluição 1:20. Qual o resultado e a interpretação?",
+   o:["12.000.000/mL: oligozoospermia","120.000.000/mL: normal","12.000.000/mL: normal"],c:0,
+   e:"Na diluição 1:20 multiplica-se a contagem por 50.000. Então 240 × 50.000 = 12.000.000/mL. O normal é acima de 15.000.000/mL, logo está abaixo: oligozoospermia."},
+  {q:"CASO CLÍNICO: na vitalidade com eosina-nigrosina de um paciente, foram contados 200 espermatozoides: 110 brancos e 90 rosados. Qual o resultado?",
+   o:["55% vivos: normal","55% vivos e 45% mortos: necrospermia","90% mortos: necrospermia"],c:1,
+   e:"Espermatozoide vivo não se cora (branco). O morto deixa o corante entrar e fica rosado. Vivos: 110 de 200 = 55%. O normal é acima de 58% de vivos, e acima de 42% de mortos é necrospermia (aqui, 45%)."}
+ ]}
+];
+// =======================================================
+
+var app=document.getElementById("app"), st={i:0,done:false,wrong:{}};
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
+function home(){
+ var h='<h1>Caça ao Tesouro</h1><p class="mut">Análises Clínicas. Acerte as perguntas de cada estação para ganhar a dica do próximo local. A última estação revela a palavra-código.</p>';
+ ESTACOES.forEach(function(s,n){h+='<a class="card st" href="#'+s.id+'"><b>Estação '+(n+1)+'</b> · '+esc(s.nome)+(s.final?' <span class="mut">(final)</span>':'')+'</a>'});
+ app.innerHTML=h;
+}
+function station(s,n){
+ var P=s.perguntas;
+ if(!P.length){app.innerHTML='<a class="back" href="#">← Estações</a><h1>Estação '+(n+1)+'</h1><div class="card">Esta estação ainda está em construção.</div>';return}
+ if(st.done){
+  var h='<a class="back" href="#">← Estações</a><h1>Estação concluída 🎉</h1><div class="card">';
+  h+=s.final?'<p>Palavra-código do grupo:</p><div class="code">'+esc(CODIGO)+'</div><p class="mut">Mostre esta palavra para validar a sua conclusão.</p>':'<p class="clue">'+esc(s.dica)+'</p>';
+  app.innerHTML=h+'</div>';return;
+ }
+ var q=P[st.i], w=st.wrong;
+ var h='<a class="back" href="#">← Estações</a><h2>Estação '+(n+1)+' · '+esc(s.nome)+'</h2><div class="bar"><i style="width:'+(st.i/P.length*100)+'%"></i></div>';
+ h+='<p class="mut">Pergunta '+(st.i+1)+' de '+P.length+'</p><div class="card"><p><b>'+esc(q.q)+'</b></p>';
+ q.o.forEach(function(t,k){h+='<button class="opt'+(w[k]?' no':'')+'" data-k="'+k+'"'+(w[k]?' disabled':'')+'>'+esc(t)+'</button>'});
+ if(st.msg)h+='<div class="fb no">'+st.msg+'</div>';
+ app.innerHTML=h+'</div>';
+ app.querySelectorAll(".opt").forEach(function(b){b.onclick=function(){answer(s,n,+b.dataset.k)}});
+}
+function answer(s,n,k){
+ var q=s.perguntas[st.i];
+ if(k===q.c){
+  var last=st.i===s.perguntas.length-1;
+  app.innerHTML='<a class="back" href="#">← Estações</a><h2>Estação '+(n+1)+' · '+esc(s.nome)+'</h2><div class="card"><p><b>'+esc(q.q)+'</b></p>'+
+   q.o.map(function(t,j){return '<div class="opt'+(j===q.c?' ok':'')+'">'+esc(t)+'</div>'}).join('')+
+   '<div class="fb ok"><b>Correto!</b> '+esc(q.e)+'</div><button class="btn" id="nx">'+(last?'Ver resultado':'Próxima')+'</button></div>';
+  document.getElementById("nx").onclick=function(){st.wrong={};st.msg="";if(last)st.done=true;else st.i++;station(s,n)};
+ }else{
+  st.wrong[k]=1;
+  st.msg='<b>Ainda não.</b> Releia a pergunta com calma e tente outra alternativa. Dica: pense no porquê de cada valor, não só no número.';
+  station(s,n);
+ }
+}
+function route(){
+ var id=location.hash.slice(1),n=ESTACOES.findIndex(function(s){return s.id===id});
+ st={i:0,done:false,wrong:{},msg:""};
+ if(n<0)home();else station(ESTACOES[n],n);
+ window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);route();
+</script>
+</body>
+</html>
